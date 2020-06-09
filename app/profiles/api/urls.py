@@ -6,7 +6,7 @@ from profiles.api.views import (AvatarUpdateView, ProfileStatusViewset,
 
 router = DefaultRouter()
 router.register('profiles', ProfileViewSet)
-router.register('status', ProfileStatusViewset)
+router.register('status', ProfileStatusViewset, basename='status')
 
 urlpatterns = [
     path('', include(router.urls)),

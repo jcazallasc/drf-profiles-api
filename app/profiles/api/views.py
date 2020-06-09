@@ -1,4 +1,5 @@
 from rest_framework import generics, mixins, viewsets
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
@@ -26,13 +27,27 @@ class ProfileViewSet(
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated, IsOwnProfileOrReadOnly]
+    filter_backends = [SearchFilter]
+    search_fields = ['city']
 
 
 class ProfileStatusViewset(ModelViewSet):
-    queryset = ProfileStatus.objects.all()
     serializer_class = ProfileStatusSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
-    def perform_Create(self, serializer):
+    def get_queryset(self):
+        queryset = ProfileStatus.objects.all()
+
+        username = self.request.query_params.get('username')
+        if username:
+            queryset = queryset.filter(profile__user__username=username)
+
+        city = self.request.query_params.get('city')
+        if city:
+            queryset = queryset.filter(profile__city=city)
+
+        return queryset
+
+    def perform_create(self, serializer):
         user_profile = self.request.user.profiles
         serializer.save(user_profile=user_profile)
