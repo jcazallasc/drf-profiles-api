@@ -22,7 +22,7 @@ class ProfileAvatarSerializer(serializers.ModelSerializer):
 
 class ProfileStatusSerializer(serializers.ModelSerializer):
 
-    user_profile = serializers.StringRelatedField(read_only=True)
+    profile = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = ProfileStatus

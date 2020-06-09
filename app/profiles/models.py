@@ -19,7 +19,7 @@ class Profile(models.Model):
 
 class ProfileStatus(models.Model):
     profile = models.ForeignKey(
-        User,
+        Profile,
         on_delete=models.CASCADE,
     )
     status = models.CharField(max_length=240)
