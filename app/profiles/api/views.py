@@ -49,5 +49,4 @@ class ProfileStatusViewset(ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        user_profile = self.request.user.profiles
-        serializer.save(user_profile=user_profile)
+        serializer.save(profile=self.request.user.profile)
